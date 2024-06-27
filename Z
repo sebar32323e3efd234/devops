@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# Sprawdzanie co zajmuje miejsce w katalogu /opt i zapisanie wyników do zmiennej
-usage=$(du -ah /opt)
+# Definiujemy zmienne
+output_file="miejsce.txt"
+data=$(date +"%Y-%m-%d %H:%M:%S")
 
-# Plik, do którego dopiszemy wyniki
-output_file="/ścieżka/do/istniejącego/pliku.txt"
+# Sprawdzamy, co zajmuje miejsce w /opt, sortujemy wyniki według rozmiaru i dopisujemy do pliku
+echo "Data: $data" >> $output_file
+du -ah /opt | sort -rh >> $output_file
+echo "------------------------" >> $output_file
 
-# Dopisywanie wyników do pliku
-echo "$usage" >> "$output_file"
-
-# Informacja o zakończeniu operacji
-echo "Zakończono dopisywanie wyników do $output_file"
+echo "Zaktualizowano plik $output_file"
