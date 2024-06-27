@@ -1,1 +1,13 @@
-M
+#!/bin/bash
+
+# Sprawdzanie co zajmuje miejsce w katalogu /opt i zapisanie wyników do zmiennej
+usage=$(du -ah /opt)
+
+# Plik, do którego dopiszemy wyniki
+output_file="/ścieżka/do/istniejącego/pliku.txt"
+
+# Dopisywanie wyników do pliku
+echo "$usage" >> "$output_file"
+
+# Informacja o zakończeniu operacji
+echo "Zakończono dopisywanie wyników do $output_file"
