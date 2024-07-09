@@ -1,12 +1,17 @@
-#!/bin/bash
+-- Utworzenie roli 'test'
+CREATE ROLE test;
 
-# Definiujemy zmienne
-output_file="miejsce.txt"
-data=$(date +"%Y-%m-%d %H:%M:%S")
+-- Przyznanie uprawnień USAGE na schemacie 'camunda'
+GRANT USAGE ON SCHEMA camunda TO test;
 
-# Sprawdzamy, co zajmuje miejsce w /opt, sortujemy wyniki według rozmiaru i dopisujemy do pliku
-echo "Data: $data" >> $output_file
-du -ah /opt | sort -rh >> $output_file
-echo "------------------------" >> $output_file
+-- Przyznanie uprawnień SELECT na wszystkich tabelach w schemacie 'camunda'
+GRANT SELECT ON ALL TABLES IN SCHEMA camunda TO test;
 
-echo "Zaktualizowano plik $output_file"
+-- Automatyczne przyznawanie uprawnień SELECT na przyszłe tabele w schemacie 'camunda'
+ALTER DEFAULT PRIVILEGES IN SCHEMA camunda GRANT SELECT ON TABLES TO test;
+
+-- Utworzenie nowego użytkownika
+CREATE USER nowy_uzytkownik WITH PASSWORD 'twoje_haslo';
+
+-- Przypisanie roli 'test' nowemu użytkownikowi
+GRANT test TO nowy_uzytkownik;
