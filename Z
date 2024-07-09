@@ -1,17 +1,4 @@
--- Utworzenie roli 'test'
-CREATE ROLE test;
+czy nalezy dodac jeszcze uprawnienia do laczenia z baza temu uzytkownikowi
+GPT
 
--- Przyznanie uprawnień USAGE na schemacie 'camunda'
-GRANT USAGE ON SCHEMA camunda TO test;
-
--- Przyznanie uprawnień SELECT na wszystkich tabelach w schemacie 'camunda'
-GRANT SELECT ON ALL TABLES IN SCHEMA camunda TO test;
-
--- Automatyczne przyznawanie uprawnień SELECT na przyszłe tabele w schemacie 'camunda'
-ALTER DEFAULT PRIVILEGES IN SCHEMA camunda GRANT SELECT ON TABLES TO test;
-
--- Utworzenie nowego użytkownika
-CREATE USER nowy_uzytkownik WITH PASSWORD 'twoje_haslo';
-
--- Przypisanie roli 'test' nowemu użytkownikowi
-GRANT test TO nowy_uzytkownik;
+Tak, masz rację. Musisz również przyznać nowemu użytkownikowi uprawnienia do łączenia się z bazą danych. Domyślnie użytkownicy PostgreSQL mają uprawnienia do łączenia się z bazą danych, ale dobrze jest to jawnie ustalić.
