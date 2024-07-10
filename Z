@@ -1,4 +1,14 @@
-czy nalezy dodac jeszcze uprawnienia do laczenia z baza temu uzytkownikowi
-GPT
+-- Cofnięcie wszystkich uprawnień użytkownika na tabelach w schemacie 'camunda'
+REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA camunda FROM nowy_uzytkownik;
 
-Tak, masz rację. Musisz również przyznać nowemu użytkownikowi uprawnienia do łączenia się z bazą danych. Domyślnie użytkownicy PostgreSQL mają uprawnienia do łączenia się z bazą danych, ale dobrze jest to jawnie ustalić.
+-- Cofnięcie wszystkich uprawnień użytkownika na schemacie 'camunda'
+REVOKE ALL PRIVILEGES ON SCHEMA camunda FROM nowy_uzytkownik;
+
+-- Cofnięcie wszystkich uprawnień użytkownika na bazie danych 'twoja_baza'
+REVOKE ALL PRIVILEGES ON DATABASE twoja_baza FROM nowy_uzytkownik;
+
+-- Usunięcie roli 'test' od użytkownika (jeśli dotyczy)
+REVOKE test FROM nowy_uzytkownik;
+
+-- Usunięcie użytkownika
+DROP USER nowy_uzytkownik;
