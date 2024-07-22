@@ -1,14 +1,11 @@
--- Cofnięcie wszystkich uprawnień użytkownika na tabelach w schemacie 'camunda'
-REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA camunda FROM nowy_uzytkownik;
-
--- Cofnięcie wszystkich uprawnień użytkownika na schemacie 'camunda'
-REVOKE ALL PRIVILEGES ON SCHEMA camunda FROM nowy_uzytkownik;
-
--- Cofnięcie wszystkich uprawnień użytkownika na bazie danych 'twoja_baza'
-REVOKE ALL PRIVILEGES ON DATABASE twoja_baza FROM nowy_uzytkownik;
-
--- Usunięcie roli 'test' od użytkownika (jeśli dotyczy)
-REVOKE test FROM nowy_uzytkownik;
-
--- Usunięcie użytkownika
-DROP USER nowy_uzytkownik;
+ stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Ustawienie nazwy buildu na wartość parametru ivecNumber
+                    currentBuild.displayName = "${params.ivecNumber}-${env.BUILD_NUMBER}"
+                }
+                echo "Building with name: ${params.ivecNumber}-${env.BUILD_NUMBER}"
+            }
+        }
+}
