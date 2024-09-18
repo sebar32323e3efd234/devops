@@ -1,0 +1,56 @@
+Aby przenieść część danych z bazy danych PostgreSQL z określonego okresu czasu na inny serwer, można użyć kilku kroków, w tym eksportu danych z filtrem czasowym do pliku .sql i późniejszego importu na docelowy serwer. Oto pełna procedura:
+1. Tworzenie zapytania SQL z filtrem czasowym
+
+Najpierw utwórz zapytanie SQL, które wybierze dane z określonego zakresu czasu, korzystając z kolumny, która przechowuje datę. Załóżmy, że masz tabelę orders z kolumną created_at.
+
+Przykład zapytania:
+
+sql
+
+SELECT * FROM orders WHERE created_at BETWEEN '2023-01-01' AND '2023-06-30';
+
+2. Eksportowanie danych do pliku .sql za pomocą pg_dump
+
+Możesz użyć narzędzia pg_dump, aby wyeksportować wybrane dane do pliku .sql. Jednak pg_dump domyślnie nie obsługuje bezpośredniego filtrowania po danych. Dlatego musisz najpierw skorzystać z kombinacji narzędzia COPY lub stworzyć tymczasową tabelę z danymi z określonego zakresu, a potem wyeksportować ją.
+Eksport danych do pliku SQL za pomocą COPY:
+
+bash
+
+psql -d nazwa_bazy -c "\copy (SELECT * FROM orders WHERE created_at BETWEEN '2023-01-01' AND '2023-06-30') TO 'sciezka/do/plik.sql' WITH CSV HEADER"
+
+Eksport danych do pliku SQL za pomocą tymczasowej tabeli:
+
+    Stwórz tymczasową tabelę:
+
+    sql
+
+CREATE TEMP TABLE temp_orders AS
+SELECT * FROM orders WHERE created_at BETWEEN '2023-01-01' AND '2023-06-30';
+
+Wyeksportuj tymczasową tabelę za pomocą pg_dump:
+
+bash
+
+    pg_dump -t temp_orders -U uzytkownik -h localhost nazwa_bazy > export.sql
+
+    Tutaj:
+        -t temp_orders wybiera tabelę temp_orders do eksportu.
+        nazwa_bazy to nazwa twojej bazy danych.
+        export.sql to plik, do którego dane zostaną zapisane.
+
+3. Importowanie danych na inny serwer
+
+Po wygenerowaniu pliku SQL, możesz zaimportować dane na inny serwer PostgreSQL.
+Import do nowego serwera:
+
+    Zaloguj się do serwera docelowego:
+
+    bash
+
+    psql -U uzytkownik -h localhost nowa_baza < export.sql
+
+    Upewnij się, że połączenie z serwerem PostgreSQL jest poprawne, a użytkownik ma odpowiednie uprawnienia do zapisu danych do nowej bazy.
+
+Dodatkowe uwagi:
+
+    Jeśli masz duże tabele i wiele zależności, możesz rozważyć użycie narzędzi takich jak pglogical do replikacji części danych.
